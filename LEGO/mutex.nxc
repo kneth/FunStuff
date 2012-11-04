@@ -1,0 +1,31 @@
+/*
+ * mutex using NXC
+ *
+ * (C) Copyright 2012 by Kenneth Geisshirt <http://kenneth.geisshirt.dk/>
+ *
+ */
+
+string s = "";
+mutex m;
+
+task Data() {
+    while (true) {
+        Acquire(m);
+        TextOut(40, LCD_LINE1, "DATA");
+        Release(m);
+    }
+    
+}
+
+task Fisk() {
+    while(true) {
+        Acquire(m);
+        TextOut(40, LCD_LINE1, "FISK");
+        Release(m);
+    }
+}
+
+task main() {
+    TextOut(0, LCD_LINE1, "Alt om");
+    Precedes(Data, Fisk);
+}

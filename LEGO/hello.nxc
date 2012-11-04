@@ -1,0 +1,20 @@
+/*
+ * hello world for Mindstorm using NXC
+ *
+ * (C) Copyright 2012 by Kenneth Geisshirt <http://kenneth.geisshirt.dk/>
+ *
+ */
+
+task main() {
+    int i;
+
+    TextOut(0, LCD_LINE1, "Hej Alt om DATA");
+    TextOut(0, LCD_LINE2, "4-tabellen");
+    for(i=1; i<=10; i++) {
+        NumOut(0,  LCD_LINE3, i);    // position 0
+        NumOut(40, LCD_LINE3, 4);    // position 5
+        NumOut(80, LCD_LINE3, 4*i);  // position 10
+        Wait(500);
+    }
+}
+    

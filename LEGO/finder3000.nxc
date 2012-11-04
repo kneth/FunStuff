@@ -1,0 +1,49 @@
+/*
+ * Finder3000 - software for a primitive robot
+ *
+ * (C) Copyright 2012 by Kenneth Geisshirt <http://kenneth.geisshirt.dk/>
+ *
+ */
+
+mutex hasMotor;
+
+task DriveForward() {
+    while (true) {
+        Acquire(hasMotor);
+        OnFwd(OUT_AC, 100);
+        Wait(100);
+        Off(OUT_AC);
+        Release(hasMotor);
+    }
+}
+
+task DetectWall() {
+    while (true) {
+        while (SensorUS(IN_1) > 25) ;   // 25 cm
+        TextOut(0, LCD_LINE1, "Wall detected");
+        Acquire(hasMotor);
+        Off(OUT_AC);
+        OnRev(OUT_C, 100);
+        Wait(100);
+        Release(hasMotor);
+    }
+}
+
+task DetectBrick() {
+    while (true) {
+        until (Sensor(IN_4) > 40) ;
+        TextOut(0, LCD_LINE1, "Brick detected");
+        Acquire(hasMotor);
+        Off(OUT_AC);
+        Wait(500);
+        Release(hasMotor);
+    }
+}
+
+task main() {
+    SetSensorLowspeed(IN_1);  // ultralyd
+    SetSensorLight(IN_4);     // farve
+
+    TextOut(0, LCD_LINE1, "Hej Alt om DATA"); 
+    Precedes(DriveForward, DetectWall, DetectBrick);
+}
