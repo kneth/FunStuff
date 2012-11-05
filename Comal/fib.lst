@@ -1,0 +1,9 @@
+ 10 FUNC fib(n) CLOSED
+ 20   IF n > 2 THEN
+ 30     RETURN fib(n-1)+fib(n-2)
+ 40   ELSE
+ 50     RETURN 1
+ 60   ENDIF
+ 70 ENDFUNC
+ 80
+ 90 PRINT fib(10)

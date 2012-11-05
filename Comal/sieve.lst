@@ -1,0 +1,21 @@
+ 10 DIM a(625)
+ 20 
+ 30 a(1) := 0
+ 40 FOR i := 2 TO 625 DO
+ 50  a(i) := TRUE
+ 60 ENDFOR
+ 70 
+ 80 FOR i := 2 TO 25 DO
+ 90  IF a(i) THEN
+100    FOR j := i*i TO 625 STEP i DO
+110      a(j) := FALSE
+120    ENDFOR
+130  ENDIF
+140 ENDFOR
+150
+160 PRINT "Primes:"
+170 FOR i := 1 TO 625 DO
+180  IF a(i) THEN
+190    PRINT i
+200  ENDIF
+210 ENDFOR
