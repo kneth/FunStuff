@@ -21,6 +21,9 @@ Comal
 -----
 Retrocomputing in COMAL-80 (using OpenComal).
 
+* fib.lst: Fibonacci numbers
+* sieve.lst: finding prime numbers
+* brussel.lst: simulation of Brusselator using simple Euler integrator
 
 Misc
 ----
