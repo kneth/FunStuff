@@ -1,0 +1,6 @@
+ 10 PRINT "Tabel: "
+ 20 INPUT n
+ 30 FOR i:= 1 TO 10 DO
+ 40   PRINT USING "##": i;
+ 50   PRINT USING "###": i*n
+ 60 ENDFOR

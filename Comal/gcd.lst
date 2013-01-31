@@ -1,0 +1,18 @@
+  10 FUNC gcd(a, b) CLOSED
+  20   IF a = b THEN
+  30     RETURN a
+  40   ELSE
+  50     IF a > b THEN
+  60       RETURN gcd(a-b, b)
+  70     ELSE
+  80       RETURN gcd(a, b-a)
+  90     ENDIF
+ 100   ENDIF
+ 110 ENDFUNC
+ 120
+ 130 PRINT "Indtast N"
+ 140 INPUT n
+ 150 PRINT "Indtast M"
+ 160 INPUT m
+ 170 d := gcd(n, m)
+ 180 PRINT "Kan forkortelses med ", d
