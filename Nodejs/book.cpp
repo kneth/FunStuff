@@ -28,7 +28,7 @@ Person* Book::operator[](const size_t index) {
 
 void Book::remove(const size_t index) {
     if (index >= 0 && index <= m_persons.size()) {
-        //        m_persons.(index);
+        m_persons.erase(m_persons.begin()+index);
     }
     else {
         throw BookRangeException();

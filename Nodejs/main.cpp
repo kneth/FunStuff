@@ -34,4 +34,7 @@ int main(int argc, char* argv[]) {
     cout << "Looking for Peter" << endl;
     Person *p4 = b.lookup("Peter");
     cout << p4->to_str() << endl;
+
+    b.remove(1);
+    cout << "After remove: " << b.size() << endl;
 }
