@@ -7,14 +7,16 @@ GNU-Parallel
 ------------
 GNU Parallel is a program for running command-line tools in parallel.
 
-map.pl and reduce.pl implement a Map/Reduce analysis of the flight data set. You run the analysis
+map.pl and reduce.pl implement a Map/Reduce analysis of the flight
+data set. You run the analysis 
 using the command:
 
     cat On_Time_Performance_1H2012.csv | parallel --pipe --blocksize 64M ./map.pl | ./reduce.pl
 
 LEGO
 ----
-Various experiments with LEGO Mindstorm.
+Various experiments with LEGO Mindstorm. Most of these experiments
+have been published in Alt om DATA.
 
 
 Comal
@@ -25,8 +27,36 @@ Retrocomputing in COMAL-80 (using OpenComal).
 * sieve.lst: finding prime numbers
 * brussel.lst: simulation of Brusselator using simple Euler integrator
 
+
+JavaScript
+----------
+Just a couple of JavaScripts experiments.
+
+* graph.js: a "library" for handling directed acyclic graphs.
+
+
+Node.js
+-------
+A model extension for Node.js. C++ classes are wrapped as Node.js classes.
+
+* person.cpp and book.cpp: C++ classes
+* person_wrap.cpp and book_wrap.cpp: Wrapper classes.
+
+Building C++ classes:
+
+    make
+
+Building Node.js extension:
+
+    node-waf configure
+    node-waf build
+    sudo node-waf install
+
+
 Misc
 ----
 Just a collection of small programs.
 
-* hailstone.c: generating hailstone series (see http://en.wikipedia.org/wiki/Collatz_conjecture)
+* hailstone.c: generating hailstone series (see
+  http://en.wikipedia.org/wiki/Collatz_conjecture)
+* fraction.py: implementation of rational number arithmetic.
