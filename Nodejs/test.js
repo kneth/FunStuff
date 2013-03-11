@@ -14,17 +14,21 @@ console.log(book.length());
 book.add(p1);
 console.log(book.length());
 
+
+// Enumerator
 for (i in book) {
     if (typeof(book[i]) != 'function') {
         console.log(book[i].firstname);
     }
 }
 
+// Apply
 var s = book.apply(function (b) {
     return b.length();
 });    
 console.log("Length: "+s);
 
+// Apply with exception
 try {
     var s = book.apply(function (b) {
         throw { msg: "Error" };
@@ -36,9 +40,21 @@ catch (e) {
 }
 
 
+// Anonymous function
 book.each(function (p) {
     console.log(p.lastname+", "+p.firstname)
 });
+
+
+// Wrong arguments
+console.log("Wrong arguments");
+try {
+    book.add();
+}
+catch (e) {
+    console.log("Error: " + e);
+}
+
 
 var p3 = book.lookup("Peter");
 console.log("Peter's last name is "+p3.lastname);

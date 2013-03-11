@@ -28,7 +28,6 @@ def build(bld):
   obj.target = 'funstuff'
   obj.source = ['funstuff_node.cpp', 'person_wrap.cpp', 'book_wrap.cpp', 'book.cpp', 'person.cpp']
   obj.cxxflags = ['-Wall', '-Wextra', '-ansi', '-pedantic', '-Wno-unused-parameter', '-DNDEBUG', '-O3']
-#  obj.linkflags = ['-L. -lfunstuff']
   obj.linkflags = []
   ldflags = os.environ.get('LDFLAGS')
   if ldflags: obj.linkflags = ldflags.split() + obj.linkflags
