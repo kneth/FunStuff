@@ -19,20 +19,20 @@ have been published in Alt om DATA.
 ** Comal
 Retrocomputing in COMAL-80 (using OpenComal).
 
-  - fib.lst:: Fibonacci numbers
-  - sieve.lst:: finding prime numbers
-  - brussel.lst:: simulation of Brusselator using simple Euler integrator
+  - fib.lst :: Fibonacci numbers
+  - sieve.lst :: finding prime numbers
+  - brussel.lst :: simulation of Brusselator using simple Euler integrator
 
 ** JavaScript
 Just a couple of JavaScripts experiments.
 
-  - graph.js:: a "library" for handling directed acyclic graphs.
+  - graph.js :: a "library" for handling directed acyclic graphs.
 
 ** Node.js
 A model extension for Node.js. C++ classes are wrapped as Node.js classes.
 
-  - person.cpp and book.cpp:: C++ classes
-  - person_wrap.cpp and book_wrap.cpp:: Wrapper classes.
+  - person.cpp and book.cpp :: C++ classes
+  - person_wrap.cpp and book_wrap.cpp :: Wrapper classes.
 
 Building C++ classes:
 #+BEGIN_EXAMPLE
@@ -50,5 +50,5 @@ sudo node-waf install
 ** Misc
 Just a collection of small programs.
 
-  - hailstone.c:: generating hailstone series (see http://en.wikipedia.org/wiki/Collatz_conjecture)
-  - fraction.py:: implementation of rational number arithmetic in Python.
+  - hailstone.c :: generating hailstone series (see http://en.wikipedia.org/wiki/Collatz_conjecture)
+  - fraction.py :: implementation of rational number arithmetic in Python.
