@@ -1,7 +1,8 @@
 #
 # Simple implementation of fractions
 #
-# (C) Copyright 2012 by Kenneth Geisshirt <http://kenneth.geisshirt.dk/>
+# (C) Copyright 2012-2013
+# Kenneth Geisshirt <http://kenneth.geisshirt.dk/>
 # 
 
 class Fraction():

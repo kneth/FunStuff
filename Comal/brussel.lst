@@ -2,19 +2,19 @@
  20 b = 3
  30 h = 0.1
  40
- 50 FUNC dotx(x, y)
+ 50 FUNC dotx
  60   RETURN a+x*x*y-b*x-x
  70 ENDFUNC  
  80
- 90 FUNC doty(x, y)
+ 90 FUNC doty
 100   RETURN b*x-x*x*y
 110 ENDFUNC
 120
 130 x = 1
 140 y = 1
 150 FOR i := 1 TO 100 DO
-160   dx = dotx(x, y)
-170   dy = doty(x, y)
+160   dx = dotx()
+170   dy = doty()
 180   x = x+h*dx
 190   y = y+h*dy
 200   PRINT i*h, " ", x, " ", y

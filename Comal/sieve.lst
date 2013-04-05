@@ -16,6 +16,6 @@
 160 PRINT "Primes:"
 170 FOR i := 1 TO 625 DO
 180  IF a(i) THEN
-190    PRINT i
+190    PRINT i, " ",
 200  ENDIF
 210 ENDFOR
