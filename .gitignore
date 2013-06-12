@@ -6,3 +6,12 @@
 *.pyc
 \#*\#
 .\#*\#
+/Nodejs/build/Release/funstuff.node
+/Nodejs/build/c4che/Release.cache.py
+/Nodejs/build/c4che/build.config.py
+/Nodejs/build/config.log
+/Nodejs/funstuff.so.0.0.1
+/Nodejs/.lock-wscript
+/Misc/hailstone
+/Nodejs/main
+/Nodejs/build/.wafpickle-7

@@ -5,7 +5,7 @@ A place for all the fun stuff I do.
 GNU Parallel is a program for running command-line tools in parallel.
 
 map.pl and reduce.pl implement a Map/Reduce analysis of the flight
-data set. You run the analysis 
+data set. You run the analysis
 using the command:
 
 #+BEGIN_EXAMPLE
@@ -52,3 +52,4 @@ Just a collection of small programs.
 
   - hailstone.c :: generating hailstone series (see http://en.wikipedia.org/wiki/Collatz_conjecture)
   - fraction.py :: implementation of rational number arithmetic in Python.
+  - opg1A.py and opg3A.py :: simulations of Svante's home work in probability.
