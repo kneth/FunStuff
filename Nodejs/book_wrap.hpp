@@ -1,4 +1,6 @@
-#define BUILDING_NODE_EXTENSION
+#ifndef BUILDING_NODE_EXTENSION
+#  define BUILDING_NODE_EXTENSION
+#endif
 
 #ifndef _BOOK_WRAP_
 #define _BOOK_WRAP_

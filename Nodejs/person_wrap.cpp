@@ -1,6 +1,7 @@
 #include "person_wrap.hpp"
 #include "person.hpp"
 #include <iostream>
+#include <string.h>
 using namespace v8;
 
 Persistent<Function> PersonWrap::Constructor;
@@ -72,13 +73,13 @@ Handle<Object> PersonWrap::New(Person* p) {
     obj->SetInternalField(0, person_ptr);
     return scope.Close(obj);
 }
-    
+
 // Get an attribute (firstname, lastname, birthday)
 Handle<Value> PersonWrap::Getter(Local<String> name, const AccessorInfo &info) {
     HandleScope scope;
     const PersonWrap* pw = PersonWrap::Unwrap<PersonWrap>(info.This());
     Person *p = pw->m_person;
-    
+
     // which attribute?
     const String::Utf8Value attr(name);
     if (strcmp(*attr, "firstname") == 0) {
@@ -114,7 +115,7 @@ Handle<Value> PersonWrap::Setter(Local<String> name, Local<Value> value, const A
             p->firstname(*v);
         }
         else {
-            return ThrowException(Exception::TypeError(String::New("String expected")));     
+            return ThrowException(Exception::TypeError(String::New("String expected")));
         }
     }
     else if (strcmp(*attr, "lastname") == 0) {
@@ -123,7 +124,7 @@ Handle<Value> PersonWrap::Setter(Local<String> name, Local<Value> value, const A
             p->lastname(*v);
         }
         else {
-            return ThrowException(Exception::TypeError(String::New("String expected")));     
+            return ThrowException(Exception::TypeError(String::New("String expected")));
         }
     }
     else if (strcmp(*attr, "birthday") == 0) {
@@ -132,7 +133,7 @@ Handle<Value> PersonWrap::Setter(Local<String> name, Local<Value> value, const A
             p->birthday(time_t(d->NumberValue()));
         }
         else {
-            return ThrowException(Exception::TypeError(String::New("Date expected")));     
+            return ThrowException(Exception::TypeError(String::New("Date expected")));
         }
     }
     else {
