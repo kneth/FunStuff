@@ -50,6 +50,15 @@ node-waf build
 sudo node-waf install
 #+END_EXAMPLE
 
+** Pi
+Implementation of calculation of pi using Monte Carlo in various
+languages.
+
+Currently supported languages:
+
+  - pi.sh :: bash
+  - pi.py :: Python 
+
 ** Misc
 Just a collection of small programs.
 
