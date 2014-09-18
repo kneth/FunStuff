@@ -28,11 +28,14 @@ Just a couple of JavaScripts experiments.
 
   - graph.js :: a "library" for handling directed acyclic graphs.
 
-** Node.js
-A model extension for Node.js. C++ classes are wrapped as Node.js classes.
+** Extensions
+A model extension for Node.js and Python. C++ classes are wrapped as Node.js and Python classes.
 
   - person.cpp and book.cpp :: C++ classes
-  - person_wrap.cpp and book_wrap.cpp :: Wrapper classes.
+  - person_wrap.cpp and book_wrap.cpp :: Wrapper classes (Node.js).
+  - py_person.cpp and py_book.cpp :: Wrapper classes (Python).
+
+Notice that both Python 2 and 3 are supported.
 
 Building C++ classes:
 #+BEGIN_EXAMPLE
