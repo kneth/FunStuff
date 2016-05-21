@@ -1,4 +1,4 @@
-var funstuff = require('funstuff');
+var funstuff = require('./build/Release/funstuff');
 
 var book = new funstuff.Book();
 
@@ -15,51 +15,50 @@ book.add(p1);
 console.log(book.length());
 
 
-// Enumerator
+console.log('Enumerator');
 for (i in book) {
     if (typeof(book[i]) != 'function') {
-        console.log(book[i].firstname);
+        console.log("  " + book[i].firstname);
     }
 }
 
-// Apply
+console.log('Apply');
 var s = book.apply(function (b) {
     return b.length();
 });    
-console.log("Length: "+s);
+console.log("  Length: " + s);
 
-// Apply with exception
+console.log('Apply with exception');
 try {
     var s = book.apply(function (b) {
         throw { msg: "Error" };
     });
-    console.log("Length: "+s);
+    console.log("  Length: " + s);
 }
 catch (e) {
-    console.log("Exception caught: "+e.msg);
+    console.log("  Exception caught: " + e.msg);
 }
 
 
-// Anonymous function
+console.log('Anonymous function');
 book.each(function (p) {
-    console.log(p.lastname+", "+p.firstname)
+    console.log("  " + p.lastname+", "+p.firstname)
 });
 
 
-// Wrong arguments
 console.log("Wrong arguments");
 try {
     book.add();
 }
 catch (e) {
-    console.log("Error: " + e);
+    console.log("  Error: " + e);
 }
 
 
+console.log("Lookup");
 var p3 = book.lookup("Peter");
-console.log("Peter's last name is "+p3.lastname);
+console.log("  Peter's last name is "+p3.lastname);
 
 console.log("Deleting Peter");
 delete book[0];
-console.log(book.length());
-
+console.log("  " + book.length());

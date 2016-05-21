@@ -1,159 +1,195 @@
-#include "person_wrap.hpp"
-#include "person.hpp"
+#include <node.h>
+
 #include <iostream>
 #include <string.h>
+
+#include "person_wrap.hpp"
+#include "person.hpp"
+
 using namespace v8;
 
 Persistent<Function> PersonWrap::Constructor;
-
-// Add wrapper class to runtime environment
-void PersonWrap::Init(Handle<Object> target) {
-    HandleScope scope;
-
-    Local<FunctionTemplate> t = FunctionTemplate::New(New);
-    t->SetClassName(String::NewSymbol("Person"));
-    t->InstanceTemplate()->SetInternalFieldCount(1);
-
-    NODE_SET_PROTOTYPE_METHOD(t, "toString",   ToString);
-
-    Handle<ObjectTemplate> t_inst = t->InstanceTemplate();
-    t_inst->SetNamedPropertyHandler(Getter, Setter);
-    target->Set(String::NewSymbol("Person"), t->GetFunction());
-    Constructor = Persistent<Function>::New(t->GetFunction());
-}
 
 PersonWrap::PersonWrap() : m_person() {}
 
 PersonWrap::~PersonWrap() {}
 
+// Add wrapper class to runtime environment
+void PersonWrap::Init(Handle<Object> exports) {
+    Isolate* isolate = exports->GetIsolate();
+    
+    Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, PersonWrap::New);
+    tpl->SetClassName(String::NewFromUtf8(isolate, "Person"));
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+
+    // Getters and setters
+    tpl->InstanceTemplate()->SetAccessor(String::NewFromUtf8(isolate, "firstname"), PersonWrap::FirstnameGetter, PersonWrap::FirstnameSetter);
+    tpl->InstanceTemplate()->SetAccessor(String::NewFromUtf8(isolate, "lastname"),  PersonWrap::LastnameGetter,  PersonWrap::LastnameSetter);
+    tpl->InstanceTemplate()->SetAccessor(String::NewFromUtf8(isolate, "birthday"),  PersonWrap::BirthdayGetter,  PersonWrap::BirthdaySetter);
+
+
+    // Methods
+    NODE_SET_PROTOTYPE_METHOD(tpl, "toString", PersonWrap::ToString);
+
+    Constructor.Reset(isolate, tpl->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "Person"), tpl->GetFunction());
+}
+
+
 // Create a new instance of the PersonWrap class
-Handle<Value> PersonWrap::New(const Arguments& args) {
-    HandleScope scope;
+void PersonWrap::New(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
 
     // constructor take no arguments
-    if (args.Length() == 0) {
-        PersonWrap* pw = new PersonWrap();
-        Person *p      = new Person();
-        pw->m_person   = p;
-        pw->Wrap(args.This());
-        return args.This();
-    }
-    else if (args.Length() == 1) {
-        PersonWrap* pw = new PersonWrap();
-        pw->Wrap(args.This());
-        return args.This();
+    if (args.IsConstructCall()) {
+        if (args.Length() == 0) {
+            PersonWrap* pw = new PersonWrap();
+            Person *p      = new Person();
+            pw->m_person   = p;
+            pw->Wrap(args.This());
+            args.GetReturnValue().Set(args.This());
+        }
+        else if (args.Length() == 1) { // we have a Person object allocated
+            PersonWrap* pw = new PersonWrap();
+            pw->Wrap(args.This());
+            args.GetReturnValue().Set(args.This());
+        }
+        else {
+            isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Zero or one argument expected")));
+            args.GetReturnValue().SetUndefined();
+        }
     }
     else {
-        return ThrowException(Exception::SyntaxError(String::New("Zero or one argument ecpected")));
+        isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Called as plain function is not permitted")));
+        args.GetReturnValue().SetUndefined();
     }
 }
 
-// Create a new instance of the PersonWrap from a book
-Handle<Object> PersonWrap::New(Book* b, uint32_t index) {
-    HandleScope scope;
 
-    Handle<Value> argv[] = { Boolean::New(true) };
-    Handle<Object> obj = Constructor->NewInstance(1, argv);
+// Create a new instance of the PersonWrap from a book
+Handle<Object> PersonWrap::New(Isolate* isolate, Book* b, uint32_t index) {
+    EscapableHandleScope scope(isolate);
+
+    // Get a new instance of PersonWrap
+    Handle<Value> argv[] = { Boolean::New(isolate, true) };
+    Local<Function> cons = Local<Function>::New(isolate, Constructor);
+    Handle<Object> obj = cons->NewInstance(1, argv);
     PersonWrap* pw = PersonWrap::Unwrap<PersonWrap>(obj);
-    Handle<External> person_ptr = External::New(pw);
+
     pw->m_person = (*b)[size_t(index)];
-    obj->SetInternalField(0, person_ptr);
-    return scope.Close(obj);
+
+    return scope.Escape(obj);
 }
 
 // Create a wrapper for a Person object
-Handle<Object> PersonWrap::New(Person* p) {
-    HandleScope scope;
+Handle<Object> PersonWrap::NewInstance() {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
 
-    Handle<Value> argv[] = { Boolean::New(true) };
-    Handle<Object> obj = Constructor->NewInstance(1, argv);
-    PersonWrap* pw = PersonWrap::Unwrap<PersonWrap>(obj);
-    Handle<External> person_ptr = External::New(pw);
-    pw->m_person = p;
-    obj->SetInternalField(0, person_ptr);
-    return scope.Close(obj);
-}
-
-// Get an attribute (firstname, lastname, birthday)
-Handle<Value> PersonWrap::Getter(Local<String> name, const AccessorInfo &info) {
-    HandleScope scope;
-    const PersonWrap* pw = PersonWrap::Unwrap<PersonWrap>(info.This());
-    Person *p = pw->m_person;
-
-    // which attribute?
-    const String::Utf8Value attr(name);
-    if (strcmp(*attr, "firstname") == 0) {
-        const string firstname = p->firstname();
-        Local<String> s = String::New(firstname.c_str());
-        return scope.Close(s);
-    }
-    else if (strcmp(*attr, "lastname") == 0) {
-        const string lastname = p->lastname();
-        Local<String> s = String::New(lastname.c_str());
-        return scope.Close(s);
-    }
-    else if (strcmp(*attr, "birthday") == 0) {
-        Local<Value> d = Date::New(double(p->birthday()));
-        return scope.Close(d);
-    }
-    else {
-        return ThrowException(Exception::RangeError(String::New("Invalid attribute")));
-    }
+    Local<Value> argv[] = { Boolean::New(isolate, true) };
+    Local<Function> cons = Local<Function>::New(isolate, Constructor);
+    Handle<Object> obj = cons->NewInstance(1, argv);
+    return obj;
 }
 
 
-// Set an attribute (firstname, lastname, birthday)
-Handle<Value> PersonWrap::Setter(Local<String> name, Local<Value> value, const AccessorInfo &info) {
-    HandleScope scope;
+void PersonWrap::FirstnameGetter(Local<String> property, const PropertyCallbackInfo<Value>& info) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+
     PersonWrap *pw = ObjectWrap::Unwrap<PersonWrap>(info.This());
     Person *p = pw->m_person;
 
-    const String::Utf8Value attr(name);
-    if (strcmp(*attr, "firstname") == 0) {
-        if (value->IsString()) {
-            const String::Utf8Value v(value->ToString());
-            p->firstname(*v);
-        }
-        else {
-            return ThrowException(Exception::TypeError(String::New("String expected")));
-        }
-    }
-    else if (strcmp(*attr, "lastname") == 0) {
-        if (value->IsString()) {
-            const String::Utf8Value v(value->ToString());
-            p->lastname(*v);
-        }
-        else {
-            return ThrowException(Exception::TypeError(String::New("String expected")));
-        }
-    }
-    else if (strcmp(*attr, "birthday") == 0) {
-        if (value->IsDate()) {
-            Local<Date> d = Date::Cast(*value);
-            p->birthday(time_t(d->NumberValue()));
-        }
-        else {
-            return ThrowException(Exception::TypeError(String::New("Date expected")));
-        }
-    }
-    else {
-        return ThrowException(Exception::RangeError(String::New("Invalid attribute")));
-    }
-
-    return scope.Close(value);
+    info.GetReturnValue().Set(String::NewFromUtf8(isolate, p->firstname().c_str()));
 }
 
-// Convert object to string
-Handle<Value> PersonWrap::ToString(const Arguments& args) {
-    HandleScope scope;
-    if (args.Length() == 0) {
-        PersonWrap* pw = ObjectWrap::Unwrap<PersonWrap>(args.This());
-        const string s = pw->m_person->to_str();
-        cout << "str " << s << endl;
-        Handle<String> r = String::New(s.c_str());
-        return scope.Close(r);
+void PersonWrap::FirstnameSetter(Local<String> property, Local<Value> value, const PropertyCallbackInfo<void>& info) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+
+    PersonWrap *pw = ObjectWrap::Unwrap<PersonWrap>(info.This());
+    Person *p = pw->m_person;
+
+    if (value->IsString()) {
+        const String::Utf8Value v(value->ToString());
+        p->firstname(*v);
     }
     else {
-        return ThrowException(Exception::SyntaxError(String::New("No arguments expected")));
+        isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "String expected")));
+        info.GetReturnValue().SetUndefined();
+    }
+}
+
+void PersonWrap::LastnameGetter(Local<String> property, const PropertyCallbackInfo<Value>& info) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+
+    PersonWrap *pw = ObjectWrap::Unwrap<PersonWrap>(info.This());
+    Person *p = pw->m_person;
+
+    info.GetReturnValue().Set(String::NewFromUtf8(isolate, p->lastname().c_str()));
+}
+
+void PersonWrap::LastnameSetter(Local<String> property, Local<Value> value, const PropertyCallbackInfo<void>& info) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+
+    PersonWrap *pw = ObjectWrap::Unwrap<PersonWrap>(info.This());
+    Person *p = pw->m_person;
+
+    if (value->IsString()) {
+        const String::Utf8Value v(value->ToString());
+        p->lastname(*v);
+    }
+    else {
+        isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "String expected")));
+        info.GetReturnValue().SetUndefined();
+    }
+}
+
+void PersonWrap::BirthdayGetter(Local<String> property, const PropertyCallbackInfo<Value>& info) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+
+    PersonWrap *pw = ObjectWrap::Unwrap<PersonWrap>(info.This());
+    Person *p = pw->m_person;
+
+    info.GetReturnValue().Set(Date::New(isolate, double(p->birthday())));
+}
+
+
+void PersonWrap::BirthdaySetter(Local<String> property, Local<Value> value, const PropertyCallbackInfo<void>& info) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+
+    PersonWrap *pw = ObjectWrap::Unwrap<PersonWrap>(info.This());
+    Person *p = pw->m_person;
+
+    if (value->IsDate()) {
+        time_t epoc = time_t(0.001*value->NumberValue());
+        p->birthday(epoc);
+    }
+    else {
+        isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "Date expected")));
+        info.GetReturnValue().SetUndefined();
+    }
+}
+
+
+// Convert object to string
+void PersonWrap::ToString(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Isolate* isolate = Isolate::GetCurrent();
+    HandleScope scope(isolate);
+    
+    if (args.Length() == 0) {
+        PersonWrap* pw = ObjectWrap::Unwrap<PersonWrap>(args.This());
+        const std::string s = pw->m_person->to_str();
+        Handle<String> r = String::NewFromUtf8(isolate, s.c_str());
+        args.GetReturnValue().Set(r);
+    }
+    else {
+        isolate->ThrowException(Exception::SyntaxError(String::NewFromUtf8(isolate, "No arguments expected")));
+        args.GetReturnValue().SetUndefined();
     }
 }
