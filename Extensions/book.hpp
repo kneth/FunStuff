@@ -1,5 +1,5 @@
-#ifndef _BOOK_HPP_
-#define _BOOK_HPP_
+#ifndef BOOK_HPP
+#define BOOK_HPP
 
 #include <exception>
 #include <vector>
@@ -12,7 +12,7 @@ class Book {
 public:
     Book() {};
     ~Book() {};
-    
+
     Person* lookup(string name);
     void add(Person*);
     Person* operator[] (const size_t index);
@@ -43,4 +43,4 @@ public:
 };
 
 
-#endif // _BOOK_HPP_
+#endif

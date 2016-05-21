@@ -1,5 +1,5 @@
-#ifndef _PERSON_HPP_
-#define _PERSON_HPP_
+#ifndef PERSON_HPP
+#define PERSON_HPP
 
 #include <ctime>
 #include <string>
@@ -28,4 +28,4 @@ private:
     time_t m_birthday;
 };
 
-#endif // _PERSON_HPP_
+#endif

@@ -1,3 +1,5 @@
+// compile: clang++ -o main main.cpp book.cpp person.cpp
+
 #include "person.hpp"
 #include "book.hpp"
 
@@ -26,14 +28,20 @@ int main(int argc, char* argv[]) {
     p3->birthday(48553200);    // 1971-07-17
     b.add(p3);
 
+    Person *p4 = new Person();
+    p4->firstname("Charlie");
+    p4->lastname("Stross");
+    p4->birthday(-164221200);  // 1964-10-18
+    b.add(p4);
+
     for(size_t i=0; i<b.size(); ++i) {
         Person *p = b[i];
         cout << p->to_str() << endl;
     }
 
     cout << "Looking for Peter" << endl;
-    Person *p4 = b.lookup("Peter");
-    cout << p4->to_str() << endl;
+    Person *p5 = b.lookup("Peter");
+    cout << p5->to_str() << endl;
 
     b.remove(1);
     cout << "After remove: " << b.size() << endl;

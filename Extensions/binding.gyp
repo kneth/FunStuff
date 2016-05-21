@@ -1,17 +1,10 @@
 {
-    'variables': {
-        'sources': [ '<!@(ls *.cpp)' ],
-        'cflags':  [ '-frtti', '-fexceptions', '-Wall', '-Wextra', '-ansi',
-                     '-pedantic', '-Wno-long-long', '-Wno-unused-parameter' ]
-    },
     'targets': [
         {
             'target_name': 'funstuff',
-            'cflags_cc': [ '-O3', '-DNDEBUG', '<@(cflags)' ],
-            'sources':   [ '<@(sources)' ],
-            'libraries': [ ],
+            'sources': [ 'person.cpp', 'person_wrap.cpp', 'book.cpp', 'book_wrap.cpp', 'funstuff.cpp' ],
             'xcode_settings': {
-                'OTHER_CFLAGS': [ '-O3', '-DNDEBUG', '<@(cflags)' ]
+                'OTHER_CFLAGS': [ '-mmacosx-version-min=10.8', '-std=c++11', '-stdlib=libc++', '-fexceptions', '-frtti' ]
             }
         }
     ]
