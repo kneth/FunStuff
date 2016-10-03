@@ -59,6 +59,11 @@ Currently supported languages:
   - pi.sh :: bash
   - pi.py :: Python 
 
+** C++
+Experiements in C++
+
+  - try_catch.cpp :: How to use lambdas to wrap exception handling.
+
 ** Misc
 Just a collection of small programs.
 
