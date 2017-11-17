@@ -1,5 +1,6 @@
 *~
 *.class
+*.jar
 *.nxd
 *.nxj
 *.o
