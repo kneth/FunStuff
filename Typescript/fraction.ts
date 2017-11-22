@@ -3,8 +3,9 @@ class Fraction {
     readonly denominator: number
 
     constructor(numerator: number, denominator: number) {
-        this.numerator = numerator
-        this.denominator = denominator
+        let d = this._gcd(numerator, denominator)
+        this.numerator = numerator / d
+        this.denominator = denominator / d
     }
 
     _gcd(a: number, b: number) {
@@ -33,6 +34,10 @@ class Fraction {
 
 let half = new Fraction(1, 2)
 let twothird = new Fraction(2, 3)
+let onethird = new Fraction(1, 3)
+let f = new Fraction(6, 76)
 
 console.log(half.add(twothird).toString())
 console.log(half.mult(twothird).toString())
+console.log(half.mult(onethird).toString())
+console.log(f.toString())
