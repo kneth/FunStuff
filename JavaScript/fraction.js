@@ -23,6 +23,10 @@ Fraction.prototype.toString = function () {
     return this._numerator.toString() + "/" + this._denominator.toString();
 }
 
+Fraction.prototype.toNumber = function () {
+    return this._numerator / this._denominator;
+}
+
 Fraction.prototype.add = function (f) {
     return new Fraction(this._denominator*f._numerator+f._denominator*this._numerator, this._denominator*f._denominator);
 };
@@ -47,3 +51,6 @@ console.log(onehalf.toString() + ' / ' + twothird.toString() + ' = ' + onehalf.d
 var almost_pi = new Fraction(22, 7);
 var two = new Fraction(2, 1);
 console.log(almost_pi.toString() + ' * ' + two.toString() + ' = ' + almost_pi.mul(two));
+
+var f = onehalf.div(twothird);
+console.log('f = ' + f.toString() + ' ~= ' + f.toNumber());
