@@ -1,0 +1,17 @@
+{
+  "name": "Typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "diff": "./node_modules/.bin/tsc obj-diff.ts && node obj-diff.js"
+  },
+  "keywords": [],
+  "author": "Kenneth Geisshirt",
+  "license": "Apache 2",
+  "dependencies": {
+    "deep-object-diff": "^1.1.0",
+    "typescript": "^3.2.2"
+  }
+}
