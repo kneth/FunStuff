@@ -14,6 +14,8 @@
 /Nodejs/main
 /Nodejs/build/.wafpickle-7
 Kotlin/META-INF/main.kotlin_module
-Typescript/fraction.js
+Typescript/*.js
 ophis.bin
 a.out
+
+node_modules
