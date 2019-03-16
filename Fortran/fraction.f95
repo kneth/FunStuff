@@ -108,11 +108,13 @@ end module fraction_aritmetic
 
 program fractest
     use fraction_aritmetic
-    type(fraction) :: f1, f2
+    type(fraction) :: f1, f2, f3
 
     f1 = create_fraction(1, 3)
     f2 = create_fraction(5, 7)
+    f3 = create_fraction(4, 10)
 
+    call write_fraction(f3)
     call write_fraction(f1 + f2)
     call write_fraction(f1 - f2)
     call write_fraction(f1 * f2)
