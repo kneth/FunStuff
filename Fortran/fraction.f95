@@ -46,6 +46,15 @@ module fraction_aritmetic
             f1%denominator = f2%denominator
         end subroutine assign_fraction
 
+        function create_fraction(a, b)
+            integer, intent(in) :: a, b
+            type(fraction) create_fraction
+            integer d
+            d = gcd(a, b)
+            create_fraction%numerator = a / d
+            create_fraction%denominator = b /d
+        end function create_fraction
+
         function add_fractions(a, b)
             type(fraction), intent(in) :: a, b
             type(fraction) add_fractions
@@ -99,14 +108,13 @@ end module fraction_aritmetic
 
 program fractest
     use fraction_aritmetic
-    type(fraction) :: f1, f2, f3
+    type(fraction) :: f1, f2
 
-    f1%numerator = 1
-    f1%denominator = 3
+    f1 = create_fraction(1, 3)
+    f2 = create_fraction(5, 7)
 
-    f2%numerator = 5
-    f2%denominator = 7
-
-    f3 = f1 + f2
-    call write_fraction(f3)
+    call write_fraction(f1 + f2)
+    call write_fraction(f1 - f2)
+    call write_fraction(f1 * f2)
+    call write_fraction(f1 / f2)
 end program fractest
