@@ -1,0 +1,16 @@
+using Random
+using Base.Threads
+const N = 100000
+
+rng = MersenneTwister(1234)
+
+nhits = Threads.Atomic{Int}(0)
+Threads.@threads for i = 1:N
+    (x, y) = randn(rng, Float64, 2)
+    if x*x + y*y < 1
+        Threads.atomic_add!(nhits, 1)
+    end
+end
+
+π = 4.0 * nhits[] / N
+println("π = ", π)
