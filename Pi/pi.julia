@@ -1,0 +1,19 @@
+# Estimate π
+# Execute: julia pi.julia
+
+using Random
+
+const N = 100000
+
+rng = MersenneTwister(1234)
+
+nhits = 0
+for i = 1:N
+    (x, y) = randn(rng, Float64, 2)
+    if x*x + y*y < 1
+        global nhits += 1
+    end
+end
+
+π = 4.0 * nhits / N
+println("π = ", π)
