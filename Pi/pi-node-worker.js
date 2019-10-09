@@ -1,23 +1,48 @@
-// node v10 or later is required!!!
+// node v10.5 or later is required!!!
 
-const { Worker, isMainThread, parentPort } = require('worker_threads');
+const { Worker, isMainThread, parentPort, WorkerData } = require('worker_threads');
 
-const nIterations = 1000;
-const nWorkers = 10;
+const iterations = 100000;
 
-if (isMainThread) {
+let instance = 0;
+let nhits = 0;
 
-} else {
-    let nhits = 0;
+const threads = () => {
+    return new Promise((resolve, reject) => {
+        const thisInstance = ++instance;
 
-    let i = 0;
-    while (i < nIterations) {
-        let x = Math.random();
-        let y = Math.random();
-        if (x*x+y*y < 1) {
-            nhits++;
-        }
-        i++;
-    }
+        const worker = new Worker(`${__dirname}/pi-worker.js`, {
+            workerData: {
+                instance: thisInstance,
+                iterations: iterations
+            },
+        });
+        worker.on('message', (data) => {
+            console.log(data);
+            nhits += data;
+            resolve();
+        });
+        worker.on('error', (err) => {
+            console.log(err);
+            reject(err);
+        });
+        worker.on('exit', (code) => {
+            if (code !== 0)
+                reject(new Error(`Worker stopped with exit code ${code}`));
+        });
+    });
+};
 
+console.log('PID = ', process.pid);
+
+const threadCounts = 100;
+let promises = [];
+for (let threadCount = 0; threadCount < threadCounts; threadCount++) {
+    console.log(`Spawning thread ${instance + 1}`);
+    let p = threads();
+    promises.push(p);
 }
+
+Promise.all(promises).then(() => {
+    console.log('pi = ', 4.0 * nhits/(threadCounts * iterations));
+});
