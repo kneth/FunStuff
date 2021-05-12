@@ -1,10 +1,10 @@
 const f1 = () => {
-    return
-        "foo";
+    return 
+    { foo: "foo" };
 }
 
 const f2 = () => {
-    return "bar";
+    return { bar: "bar" };
 }
 
 console.log(f1());
