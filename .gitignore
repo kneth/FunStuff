@@ -19,3 +19,6 @@ ophis.bin
 a.out
 
 node_modules
+
+.fake
+.ionide
