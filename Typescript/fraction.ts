@@ -8,7 +8,7 @@ class Fraction {
         this.denominator = denominator / d
     }
 
-    _gcd(a: number, b: number) {
+    _gcd(a: number, b: number) : number {
         if (a === b) {
             return a
         } else {
