@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "flatted": "^3.2.9",
     "nearley": "^2.19.0"
   }
 }
