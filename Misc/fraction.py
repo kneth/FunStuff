@@ -27,7 +27,7 @@ class Fraction():
             if name == "denominator":
                 return self.denominator
             else:
-                print "Wrong argument"
+                print("Wrong argument")
                 return 0
 
     def __mul__(self, f):
