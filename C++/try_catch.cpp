@@ -1,7 +1,6 @@
 // clang++ -std=c++14 -g try_catch.cpp ; ./a.out
 
 #include <functional>
-#include <type_traits>
 #include <exception>
 #include <iostream>
 

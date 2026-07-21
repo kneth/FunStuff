@@ -57,7 +57,7 @@ languages.
 Currently supported languages:
 
   - pi.sh :: bash
-  - pi.py :: Python 
+  - pi.py :: Python
 
 ** C++
 Experiements in C++
